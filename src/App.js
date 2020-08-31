@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout } from "antd";
 
 import SideMenu from "./components/Menu";
@@ -10,16 +10,11 @@ const layoutStyles = { height: "100vh" };
 const triggerStyles = { top: "60%" };
 
 function App() {
-  const [collapse, setCollapse] = useState(true);
-
   return (
     <Layout style={layoutStyles}>
       <Sider
-        onClick={() => setCollapse(!collapse)}
         collapsible
-        collapsed={collapse}
         collapsedWidth="0"
-        width="100"
         zeroWidthTriggerStyle={triggerStyles}
       >
         <SideMenu />
