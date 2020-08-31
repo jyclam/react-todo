@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
 
-import SideMenu from "./components/Menu";
+import MenuTaskList from "./components/MenuTaskList";
 import Content from "./components/Content";
 
 const { Sider } = Layout;
@@ -17,7 +17,7 @@ function App() {
         collapsedWidth="0"
         zeroWidthTriggerStyle={triggerStyles}
       >
-        <SideMenu />
+        <MenuTaskList />
       </Sider>
       <Content />
     </Layout>
