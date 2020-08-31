@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Task from "./Task";
 import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
+import Form from "./Form";
 
 import { ReactComponent as MenuOpenIcon } from "../assets/icons/menu_open.svg";
 import { ReactComponent as MenuIcon } from "../assets/icons/menu.svg";
@@ -75,6 +76,7 @@ const Content = ({ handleClick, collapsed }) => {
           </SvgWrapper>
         }
       />
+      <Form />
       <Collapse>
         {tasks.map((task) => (
           <Task key={task._id} {...task} />
