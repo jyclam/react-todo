@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Layout, Collapse } from "antd";
+import { Layout, Collapse, PageHeader } from "antd";
+import styled from "styled-components";
 
 import Task from "./Task";
+import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
+
+import { ReactComponent as MenuOpenIcon } from "../assets/icons/menu_open.svg";
+import { ReactComponent as MenuIcon } from "../assets/icons/menu.svg";
 
 const { Content: AntdContent } = Layout;
 
@@ -50,12 +55,29 @@ const tasks = [
   },
 ];
 
-const Content = () => {
+const Header = styled(PageHeader)`
+  padding: 1.3rem;
+`;
+
+const Content = ({ handleClick, collapsed }) => {
   return (
     <AntdContent>
+      <Header
+        title={
+          <SvgWrapper>
+            <SvgContainer className="trigger" onClick={handleClick}>
+              {collapsed ? (
+                <SvgIcon as={MenuIcon} />
+              ) : (
+                <SvgIcon as={MenuOpenIcon} />
+              )}
+            </SvgContainer>
+          </SvgWrapper>
+        }
+      />
       <Collapse>
         {tasks.map((task) => (
-          <Task {...task} />
+          <Task key={task._id} {...task} />
         ))}
       </Collapse>
     </AntdContent>

@@ -2,26 +2,13 @@ import React, { useState } from "react";
 import { Collapse } from "antd";
 import styled from "styled-components";
 
+import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
+
 import { ReactComponent as UncheckedIcon } from "../assets/icons/check_box_empty.svg";
 import { ReactComponent as CheckedIcon } from "../assets/icons/check_box_checked.svg";
 
-const Svg = styled.svg`
-  width: 100%;
-  height: 100%;
-`;
-
 const Header = styled.div`
   font-size: 1.5rem;
-`;
-
-const StyledSpan = styled.span`
-  vertical-align: middle;
-  display: inline-block;
-`;
-
-const SvgContainer = styled(StyledSpan)`
-  width: 3rem;
-  height: 3rem;
 `;
 
 const StyledDiv = styled.div`
@@ -45,21 +32,16 @@ const Task = ({ title, completed, details, dueDate, ...props }) => {
       key="1"
       header={
         <Header>
-          <SvgContainer
-            style={{
-              width: "3rem",
-              height: "3rem",
-            }}
-          >
+          <SvgContainer>
             {done ? (
-              <Svg as={CheckedIcon} onClick={handleClick} />
+              <SvgIcon as={CheckedIcon} onClick={handleClick} />
             ) : (
-              <Svg as={UncheckedIcon} onClick={handleClick} />
+              <SvgIcon as={UncheckedIcon} onClick={handleClick} />
             )}
           </SvgContainer>
-          <StyledSpan className={done ? "strikethrough" : ""}>
+          <SvgWrapper className={done ? "strikethrough" : ""}>
             {title}
-          </StyledSpan>
+          </SvgWrapper>
         </Header>
       }
     >
