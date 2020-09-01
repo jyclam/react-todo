@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
+import axios from "../utils/axios";
+
 const { Item } = AntdForm;
 
 const StyledForm = styled(AntdForm)`
@@ -28,16 +30,26 @@ const Form = () => {
 
   return (
     <StyledForm
-      onFinish={() => {
+      onFinish={(values) => {
         // axios POST /api/task
+        // FETCHING
+        axios
+          .post("/api/task", values)
+          .then((response) => {
+            // RESPONSE_COMPLETE
+          })
+          .catch((error) => {
+            console.error(error);
+            // ERROR
+          });
         clearForm();
       }}
     >
       <Item name="title">
-        <Input placeholder="title" value={formState.title} />
+        <Input placeholder="Task title" value={formState.title} />
       </Item>
       <Item name="details">
-        <Input placeholder="details" value={formState.details} />
+        <Input placeholder="Task details" value={formState.details} />
       </Item>
       <Item>
         <Button htmlType="submit">Submit</Button>
