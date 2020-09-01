@@ -1,44 +1,18 @@
 import React, { useState } from "react";
-import { Layout, Divider, PageHeader } from "antd";
+import { Switch, Route } from "react-router-dom";
 
-import MenuTaskList from "./components/MenuTaskList";
-import Content from "./components/Content";
+import ToDo from "./pages/ToDo";
+import Login from "./pages/Login";
 
-const { Sider } = Layout;
-
-const layoutStyles = { height: "100vh" };
-const triggerStyles = { top: "60%" };
-
-function App() {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const collapseHandler = () => {
-    setCollapsed(!collapsed);
-  };
-
-  const listSelectionHandler = (e) => {
-    console.log(e.target.dataset.id);
-  };
-
+const App = () => {
   return (
-    <Layout style={layoutStyles}>
-      <Sider
-        theme="light"
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        collapsedWidth="0"
-        zeroWidthTriggerStyle={triggerStyles}
-      >
-        <PageHeader title="To Do" />
-        <Divider />
-        <MenuTaskList handleClick={listSelectionHandler} />
-        <Divider />
-        <MenuTaskList handleClick={listSelectionHandler} />
-      </Sider>
-      <Content collapsed={collapsed} handleClick={collapseHandler} />
-    </Layout>
+    <div>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/" component={ToDo} />
+      </Switch>
+    </div>
   );
-}
+};
 
 export default App;
