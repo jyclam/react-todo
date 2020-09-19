@@ -10,8 +10,8 @@ export const LIST_ACTIONS = {
   RESPONSE_COMPLETE: "RESPONSE_COMPLETE",
   ERROR: "ERROR",
   TOGGLE_PIN: "TOGGLE_PIN",
+  ADD_LIST: "ADD_LIST",
 
-  LIST_ADD: "LIST_ADD",
   LIST_DELETE: "LIST_DELETE",
   LIST_PIN: "LIST_PIN",
   LIST_UNPIN: "LIST_UNPIN",
@@ -22,7 +22,7 @@ export const LIST_ACTIONS = {
 export const listReducer = (state, action) => {
   if (action.type === LIST_ACTIONS.FETCHING) {
     return {
-      lists: [],
+      lists: state.lists,
       loading: true,
       error: null,
     };
@@ -30,6 +30,13 @@ export const listReducer = (state, action) => {
   if (action.type === LIST_ACTIONS.RESPONSE_COMPLETE) {
     return {
       lists: action.payload.lists,
+      loading: false,
+      error: null,
+    };
+  }
+  if (action.type === LIST_ACTIONS.ADD_LIST) {
+    return {
+      lists: [...state.lists, action.payload.list],
       loading: false,
       error: null,
     };

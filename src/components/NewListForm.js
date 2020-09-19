@@ -3,6 +3,7 @@ import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
 import axios from "../utils/axios";
+import { LIST_ACTIONS } from "../Context/ListContext";
 
 const { Item } = AntdForm;
 
@@ -16,7 +17,7 @@ const initialState = {
   name: "",
 };
 
-const Form = () => {
+const Form = ({ listDispatch }) => {
   const [formState, setFormState] = useState(initialState);
 
   const clearForm = () => {
@@ -24,26 +25,22 @@ const Form = () => {
   };
 
   const handleSubmit = (values) => {
-    // axios POST /api/list
-    // FETCHING
-    console.log(values);
-
     axios
       .post("/api/list", values)
       .then(({ data }) => {
-        // RESPONSE_COMPLETE
-        console.log(data.data);
+        listDispatch({
+          type: LIST_ACTIONS.ADD_LIST,
+          payload: { list: data.data },
+        });
       })
       .catch((error) => {
-        console.error(error);
-        // ERROR
+        listDispatch({ type: LIST_ACTIONS.ERROR, payload: { error } });
       });
   };
 
   return (
     <StyledForm
       onFinish={(values) => {
-        // POST /api/list
         handleSubmit(values);
         clearForm();
       }}

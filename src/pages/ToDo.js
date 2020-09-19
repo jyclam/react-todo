@@ -65,11 +65,11 @@ function ToDo() {
         zeroWidthTriggerStyle={triggerStyles}
       >
         <PageHeader title="To Do" />
-        <Form />
+        <Form listDispatch={dispatch} />
         <Divider />
         <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} />
         <Divider />
-        <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} />
+        {/* <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} /> */}
       </Sider>
       <Content
         tasks={tasks}
