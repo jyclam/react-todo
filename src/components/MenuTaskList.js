@@ -28,10 +28,20 @@ const Title = styled.span`
   overflow: scroll;
 `;
 
-const MenuTaskList = ({ lists = [], handlePin, handleDelete }) => {
+const MenuTaskList = ({
+  lists = [],
+  handlePin,
+  handleDelete,
+  handleSelect,
+}) => {
   return (
     <>
-      <Menu selectable={false} theme="light" defaultSelectedKeys={["4"]}>
+      <Menu
+        selectable={true}
+        theme="light"
+        defaultSelectedKeys={["4"]}
+        onSelect={({ key }) => handleSelect(key)}
+      >
         {lists.map((list) => (
           <Menu.Item key={list._id}>
             <SvgWrapper>

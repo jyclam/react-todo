@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import Task from "./Task";
 import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
-import Form from "./NewTaskForm";
+import NewTaskForm from "./NewTaskForm";
 
 import { ReactComponent as MenuOpenIcon } from "../assets/icons/menu_open.svg";
 import { ReactComponent as MenuIcon } from "../assets/icons/menu.svg";
@@ -15,7 +15,7 @@ const Header = styled(PageHeader)`
   padding: 1.3rem;
 `;
 
-const Content = ({ tasks, handleClick, collapsed }) => {
+const Content = ({ tasks, handleClick, collapsed, selectedListId }) => {
   return (
     <AntdContent>
       <Header
@@ -31,7 +31,7 @@ const Content = ({ tasks, handleClick, collapsed }) => {
           </SvgWrapper>
         }
       />
-      <Form />
+      <NewTaskForm selectedListId={selectedListId} />
       <Collapse>
         {tasks.map((task) => (
           <Task key={task._id} {...task} />

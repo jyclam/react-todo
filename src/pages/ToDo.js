@@ -3,7 +3,7 @@ import { Layout, Divider, PageHeader } from "antd";
 
 import MenuTaskList from "../components/MenuTaskList";
 import Content from "../components/Content";
-import Form from "../components/NewListForm";
+import NewListForm from "../components/NewListForm";
 import {
   fetchLists,
   LIST_ACTIONS,
@@ -23,6 +23,7 @@ function ToDo() {
   const [state, dispatch] = useThunkReducer(listReducer, initialState);
   const [collapsed, setCollapsed] = useState(false);
   const [tasks, setTasks] = useState([]);
+  const [selectedListId, setSelectedListId] = useState("");
 
   const collapseHandler = () => {
     setCollapsed(!collapsed);
@@ -32,11 +33,9 @@ function ToDo() {
     dispatch(fetchLists);
   }, []);
 
-  const listSelectionHandler = (e) => {
-    console.log(e.target.dataset.id);
-
-    // fetch GET /api/task/?listId=${e.target.dataset.id}
-    fetchTasks(e.target.dataset.id);
+  const listSelectionHandler = (key) => {
+    setSelectedListId(key);
+    fetchTasks(key);
   };
 
   const fetchTasks = (listId) => {
@@ -44,7 +43,7 @@ function ToDo() {
     axios
       .get(`/api/task/?listId=${listId}`)
       .then(({ data }) => {
-        console.log(data.data);
+        console.log(data);
         setTasks(data.data);
         // RESPONSE_COMPLETE
       })
@@ -70,7 +69,7 @@ function ToDo() {
         zeroWidthTriggerStyle={triggerStyles}
       >
         <PageHeader title="To Do" />
-        <Form listDispatch={dispatch} />
+        <NewListForm listDispatch={dispatch} />
         <Divider />
         <MenuTaskList
           lists={state.lists}
@@ -87,6 +86,7 @@ function ToDo() {
         tasks={tasks}
         collapsed={collapsed}
         handleClick={collapseHandler}
+        selectedListId={selectedListId}
       />
     </Layout>
   );

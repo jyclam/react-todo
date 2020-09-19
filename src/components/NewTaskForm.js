@@ -19,9 +19,10 @@ const StyledForm = styled(AntdForm)`
 const initialState = {
   title: "",
   details: "",
+  listId: "",
 };
 
-const Form = () => {
+const Form = ({ selectedListId }) => {
   const [formState, setFormState] = useState(initialState);
 
   const clearForm = () => {
@@ -34,9 +35,11 @@ const Form = () => {
         // axios POST /api/task
         // FETCHING
         axios
-          .post("/api/task", values)
+          .post("/api/task", { ...values, listId: selectedListId })
           .then((response) => {
             // RESPONSE_COMPLETE
+            console.log(response);
+            // dispatch
           })
           .catch((error) => {
             console.error(error);
