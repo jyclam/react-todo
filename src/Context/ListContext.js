@@ -11,6 +11,7 @@ export const LIST_ACTIONS = {
   ERROR: "ERROR",
   TOGGLE_PIN: "TOGGLE_PIN",
   ADD_LIST: "ADD_LIST",
+  DELETE_LIST: "DELETE_LIST",
 
   LIST_DELETE: "LIST_DELETE",
   LIST_PIN: "LIST_PIN",
@@ -37,6 +38,13 @@ export const listReducer = (state, action) => {
   if (action.type === LIST_ACTIONS.ADD_LIST) {
     return {
       lists: [...state.lists, action.payload.list],
+      loading: false,
+      error: null,
+    };
+  }
+  if (action.type === LIST_ACTIONS.DELETE_LIST) {
+    return {
+      lists: state.lists.filter((list) => list._id !== action.payload.id),
       loading: false,
       error: null,
     };

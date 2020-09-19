@@ -12,12 +12,13 @@ import styled from "styled-components";
 
 import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
 import { ReactComponent as PushPinIcon } from "../assets/icons/push_pin.svg";
+import { ReactComponent as DeleteBinIcon } from "../assets/icons/delete_bin.svg";
 
 const StyledSvgIcon = styled(SvgIcon)`
   fill: ${(prop) => (prop.pinned ? "black" : "none")};
   stroke: black;
   stroke-linejoin: "round";
-  stroke-width: 0.2rem;
+  stroke-width: 0.1rem;
 `;
 
 const Title = styled.span`
@@ -27,7 +28,7 @@ const Title = styled.span`
   overflow: scroll;
 `;
 
-const MenuTaskList = ({ lists = [], handleClick }) => {
+const MenuTaskList = ({ lists = [], handlePin, handleDelete }) => {
   return (
     <>
       <Menu selectable={false} theme="light" defaultSelectedKeys={["4"]}>
@@ -40,7 +41,12 @@ const MenuTaskList = ({ lists = [], handleClick }) => {
                   as={PushPinIcon}
                   pinned={list.pinned}
                   data-id={list._id}
-                  onClick={handleClick}
+                  onClick={handlePin}
+                />
+                <StyledSvgIcon
+                  as={DeleteBinIcon}
+                  data-id={list._id}
+                  onClick={handleDelete}
                 />
               </SvgContainer>
             </SvgWrapper>

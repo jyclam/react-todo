@@ -54,6 +54,11 @@ function ToDo() {
       });
   };
 
+  const handleDelete = (e) => {
+    axios.delete(`/api/list/${e.target.dataset.id}`);
+    dispatch({ type: "DELETE_LIST", payload: { id: e.target.dataset.id } });
+  };
+
   return (
     <Layout style={layoutStyles}>
       <Sider
@@ -67,7 +72,14 @@ function ToDo() {
         <PageHeader title="To Do" />
         <Form listDispatch={dispatch} />
         <Divider />
-        <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} />
+        <MenuTaskList
+          lists={state.lists}
+          handleSelect={listSelectionHandler}
+          handlePin={(e) => {
+            console.log("pinning: ", e.target.dataset.id);
+          }}
+          handleDelete={handleDelete}
+        />
         <Divider />
         {/* <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} /> */}
       </Sider>
