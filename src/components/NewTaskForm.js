@@ -3,6 +3,7 @@ import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
 import axios from "../utils/axios";
+import { TASK_ACTIONS } from "../reducers/TaskReducer";
 
 const { Item } = AntdForm;
 
@@ -22,7 +23,7 @@ const initialState = {
   listId: "",
 };
 
-const Form = ({ selectedListId }) => {
+const Form = ({ selectedListId, taskDispatch }) => {
   const [formState, setFormState] = useState(initialState);
 
   const clearForm = () => {
@@ -32,18 +33,20 @@ const Form = ({ selectedListId }) => {
   return (
     <StyledForm
       onFinish={(values) => {
-        // axios POST /api/task
-        // FETCHING
         axios
           .post("/api/task", { ...values, listId: selectedListId })
-          .then((response) => {
-            // RESPONSE_COMPLETE
-            console.log(response);
-            // dispatch
+          .then(({ data }) => {
+            taskDispatch({
+              type: TASK_ACTIONS.ADD_TASK,
+              payload: { task: data.data },
+            });
           })
           .catch((error) => {
             console.error(error);
-            // ERROR
+            taskDispatch({
+              type: TASK_ACTIONS.ERROR,
+              payload: { error },
+            });
           });
         clearForm();
       }}

@@ -15,7 +15,14 @@ const Header = styled(PageHeader)`
   padding: 1.3rem;
 `;
 
-const Content = ({ tasks, handleClick, collapsed, selectedListId }) => {
+const Content = ({
+  tasks,
+  handleClick,
+  collapsed,
+  selectedListId,
+  taskDispatch,
+  taskState,
+}) => {
   return (
     <AntdContent>
       <Header
@@ -31,12 +38,19 @@ const Content = ({ tasks, handleClick, collapsed, selectedListId }) => {
           </SvgWrapper>
         }
       />
-      <NewTaskForm selectedListId={selectedListId} />
-      <Collapse>
-        {tasks.map((task) => (
-          <Task key={task._id} {...task} />
-        ))}
-      </Collapse>
+      <NewTaskForm
+        taskDispatch={taskDispatch}
+        selectedListId={selectedListId}
+      />
+      {taskState.loading ? (
+        "loading"
+      ) : (
+        <Collapse>
+          {tasks.map((task) => (
+            <Task key={task._id} {...task} />
+          ))}
+        </Collapse>
+      )}
     </AntdContent>
   );
 };

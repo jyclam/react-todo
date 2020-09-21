@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Layout, Divider, PageHeader } from "antd";
 
 import MenuTaskList from "../components/MenuTaskList";
@@ -7,8 +7,13 @@ import NewListForm from "../components/NewListForm";
 import {
   LIST_ACTIONS,
   listReducer,
-  initialState,
+  initialState as listInitialState,
 } from "../reducers/ListReducer";
+import {
+  TASK_ACTIONS,
+  taskReducer,
+  initialState as taskInitialState,
+} from "../reducers/TaskReducer";
 
 import { useThunkReducer } from "../reducers/useThunkReducer";
 
@@ -20,9 +25,12 @@ const layoutStyles = { height: "100vh" };
 const triggerStyles = { top: "60%" };
 
 function ToDo() {
-  const [state, dispatch] = useThunkReducer(listReducer, initialState);
+  const [listState, listDispatch] = useThunkReducer(
+    listReducer,
+    listInitialState,
+  );
+  const [taskState, taskDispatch] = useReducer(taskReducer, taskInitialState);
   const [collapsed, setCollapsed] = useState(false);
-  const [tasks, setTasks] = useState([]);
   const [selectedListId, setSelectedListId] = useState("");
 
   const collapseHandler = () => {
@@ -30,7 +38,7 @@ function ToDo() {
   };
 
   useEffect(() => {
-    dispatch(LIST_ACTIONS.FETCH_LIST);
+    listDispatch(LIST_ACTIONS.FETCH_LIST);
   }, []);
 
   const listSelectionHandler = (key) => {
@@ -39,22 +47,24 @@ function ToDo() {
   };
 
   const fetchTasks = (listId) => {
-    // FETCHING
+    taskDispatch({ type: TASK_ACTIONS.FETCHING });
     axios
       .get(`/api/task/?listId=${listId}`)
       .then(({ data }) => {
-        setTasks(data.data);
-        // RESPONSE_COMPLETE
+        taskDispatch({
+          type: TASK_ACTIONS.RESPONSE_COMPLETE,
+          payload: { tasks: data.data },
+        });
       })
       .catch((error) => {
         console.error(error);
-        // ERROR
+        taskDispatch({ type: TASK_ACTIONS.ERROR, payload: { error } });
       });
   };
 
   const listDeleteHandler = (id) => {
     axios.delete(`/api/list/${id}`);
-    dispatch({ type: "DELETE_LIST", payload: { id } });
+    listDispatch({ type: "DELETE_LIST", payload: { id } });
   };
 
   return (
@@ -68,10 +78,10 @@ function ToDo() {
         zeroWidthTriggerStyle={triggerStyles}
       >
         <PageHeader title="To Do" />
-        <NewListForm listDispatch={dispatch} />
+        <NewListForm listDispatch={listDispatch} />
         <Divider />
         <MenuTaskList
-          lists={state.lists}
+          lists={listState.lists}
           handleSelect={listSelectionHandler}
           handlePin={(id) => {
             console.log("pinning: ", id);
@@ -79,13 +89,14 @@ function ToDo() {
           handleDelete={listDeleteHandler}
         />
         <Divider />
-        {/* <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} /> */}
       </Sider>
       <Content
-        tasks={tasks}
+        tasks={taskState.tasks}
         collapsed={collapsed}
         handleClick={collapseHandler}
         selectedListId={selectedListId}
+        taskDispatch={taskDispatch}
+        taskState={taskState}
       />
     </Layout>
   );
