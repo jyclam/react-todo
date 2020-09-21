@@ -10,7 +10,7 @@ import {
   useThunkReducer,
   listReducer,
   initialState,
-} from "../Context/ListContext";
+} from "../reducers/ListReducer";
 
 import axios from "../utils/axios";
 

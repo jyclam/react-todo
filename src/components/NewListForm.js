@@ -3,7 +3,7 @@ import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
 import axios from "../utils/axios";
-import { LIST_ACTIONS } from "../Context/ListContext";
+import { LIST_ACTIONS } from "../reducers/ListReducer";
 
 const { Item } = AntdForm;
 

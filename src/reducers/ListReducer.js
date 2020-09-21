@@ -1,9 +1,7 @@
-import React, { createContext, useReducer } from "react";
+import { useReducer } from "react";
 import isFunction from "lodash/isFunction";
 
 import axios from "../utils/axios";
-
-export const ListContext = createContext();
 
 export const LIST_ACTIONS = {
   FETCHING: "FETCHING",
