@@ -1,14 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Menu } from "antd";
 import styled from "styled-components";
-
-// import {
-//   fetchLists,
-//   LIST_ACTIONS,
-//   useThunkReducer,
-//   listReducer,
-//   initialState,
-// } from "../Context/ListContext";
 
 import { SvgWrapper, SvgContainer, SvgIcon } from "./StyledSvg";
 import { ReactComponent as PushPinIcon } from "../assets/icons/push_pin.svg";
@@ -50,13 +42,11 @@ const MenuTaskList = ({
                 <StyledSvgIcon
                   as={PushPinIcon}
                   pinned={list.pinned}
-                  data-id={list._id}
-                  onClick={handlePin}
+                  onClick={() => handlePin(list._id)}
                 />
                 <StyledSvgIcon
                   as={DeleteBinIcon}
-                  data-id={list._id}
-                  onClick={handleDelete}
+                  onClick={() => handleDelete(list._id)}
                 />
               </SvgContainer>
             </SvgWrapper>

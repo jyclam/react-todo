@@ -5,12 +5,12 @@ import MenuTaskList from "../components/MenuTaskList";
 import Content from "../components/Content";
 import NewListForm from "../components/NewListForm";
 import {
-  fetchLists,
   LIST_ACTIONS,
-  useThunkReducer,
   listReducer,
   initialState,
 } from "../reducers/ListReducer";
+
+import { useThunkReducer } from "../reducers/useThunkReducer";
 
 import axios from "../utils/axios";
 
@@ -30,7 +30,7 @@ function ToDo() {
   };
 
   useEffect(() => {
-    dispatch(fetchLists);
+    dispatch(LIST_ACTIONS.FETCH_LIST);
   }, []);
 
   const listSelectionHandler = (key) => {
@@ -43,7 +43,6 @@ function ToDo() {
     axios
       .get(`/api/task/?listId=${listId}`)
       .then(({ data }) => {
-        console.log(data);
         setTasks(data.data);
         // RESPONSE_COMPLETE
       })
@@ -53,9 +52,9 @@ function ToDo() {
       });
   };
 
-  const handleDelete = (e) => {
-    axios.delete(`/api/list/${e.target.dataset.id}`);
-    dispatch({ type: "DELETE_LIST", payload: { id: e.target.dataset.id } });
+  const listDeleteHandler = (id) => {
+    axios.delete(`/api/list/${id}`);
+    dispatch({ type: "DELETE_LIST", payload: { id } });
   };
 
   return (
@@ -74,10 +73,10 @@ function ToDo() {
         <MenuTaskList
           lists={state.lists}
           handleSelect={listSelectionHandler}
-          handlePin={(e) => {
-            console.log("pinning: ", e.target.dataset.id);
+          handlePin={(id) => {
+            console.log("pinning: ", id);
           }}
-          handleDelete={handleDelete}
+          handleDelete={listDeleteHandler}
         />
         <Divider />
         {/* <MenuTaskList lists={state.lists} handleClick={listSelectionHandler} /> */}
