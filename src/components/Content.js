@@ -38,9 +38,11 @@ const Content = ({
           </SvgWrapper>
         }
       />
+      {taskState.error && <div>{taskState.error.message}</div>}
       <NewTaskForm
         taskDispatch={taskDispatch}
         selectedListId={selectedListId}
+        taskState={taskState}
       />
       {taskState.loading ? (
         "loading"

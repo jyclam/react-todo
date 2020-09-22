@@ -41,7 +41,9 @@ const Form = ({ selectedListId, taskDispatch }) => {
         console.error(error);
         taskDispatch({
           type: TASK_ACTIONS.ERROR,
-          payload: { error },
+          payload: {
+            error: { message: "Error creating new task. Please try again." },
+          },
         });
       });
   };
