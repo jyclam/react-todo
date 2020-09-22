@@ -22,27 +22,22 @@ const Title = styled.span`
 
 const MenuTaskList = ({
   lists = [],
-  handlePin,
+  togglePin,
   handleDelete,
   handleSelect,
 }) => {
   return (
     <>
-      <Menu
-        selectable={true}
-        theme="light"
-        defaultSelectedKeys={["4"]}
-        onSelect={({ key }) => handleSelect(key)}
-      >
+      <Menu selectable={false} theme="light" defaultSelectedKeys={["4"]}>
         {lists.map((list) => (
-          <Menu.Item key={list._id}>
+          <Menu.Item onClick={({ key }) => handleSelect(key)} key={list._id}>
             <SvgWrapper>
               <Title>{list.name}</Title>
               <SvgContainer height={"2rem"} width={"2rem"}>
                 <StyledSvgIcon
                   as={PushPinIcon}
                   pinned={list.pinned}
-                  onClick={() => handlePin(list._id)}
+                  onClick={() => togglePin(list._id, list.pinned)}
                 />
                 <StyledSvgIcon
                   as={DeleteBinIcon}

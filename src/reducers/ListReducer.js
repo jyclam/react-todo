@@ -22,6 +22,15 @@ export const listReducer = (state, action) => {
       error: null,
     };
   }
+  if (action.type === LIST_ACTIONS.EDIT_LIST) {
+    return {
+      lists: state.lists.map((list) =>
+        list._id === action.payload.list._id ? action.payload.list : list,
+      ),
+      loading: false,
+      error: null,
+    };
+  }
   if (action.type === LIST_ACTIONS.DELETE_LIST) {
     return {
       lists: state.lists.filter((list) => list._id !== action.payload.id),
@@ -61,10 +70,10 @@ export const LIST_ACTIONS = {
   ERROR: "ERROR",
   TOGGLE_PIN: "TOGGLE_PIN",
   ADD_LIST: "ADD_LIST",
+  EDIT_LIST: "EDIT_LIST",
   DELETE_LIST: "DELETE_LIST",
   FETCH_LIST: fetchLists,
 
-  // EDIT_LIST
   // ARCHIVE_LIST
 };
 

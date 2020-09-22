@@ -67,6 +67,21 @@ function ToDo() {
     listDispatch({ type: "DELETE_LIST", payload: { id } });
   };
 
+  const togglePinHandler = (id, pinned) => {
+    axios
+      .put(`/api/list/${id}`, { pinned: !pinned })
+      .then(({ data }) => {
+        console.log(data);
+        listDispatch({
+          type: LIST_ACTIONS.EDIT_LIST,
+          payload: { list: data.data },
+        });
+      })
+      .catch((error) => {
+        listDispatch({ type: LIST_ACTIONS.ERROR, payload: { error } });
+      });
+  };
+
   return (
     <Layout style={layoutStyles}>
       <Sider
@@ -81,14 +96,18 @@ function ToDo() {
         <NewListForm listDispatch={listDispatch} />
         <Divider />
         <MenuTaskList
-          lists={listState.lists}
+          lists={listState.lists.filter((list) => list.pinned)}
           handleSelect={listSelectionHandler}
-          handlePin={(id) => {
-            console.log("pinning: ", id);
-          }}
+          togglePin={togglePinHandler}
           handleDelete={listDeleteHandler}
         />
         <Divider />
+        <MenuTaskList
+          lists={listState.lists.filter((list) => !list.pinned)}
+          handleSelect={listSelectionHandler}
+          togglePin={togglePinHandler}
+          handleDelete={listDeleteHandler}
+        />
       </Sider>
       <Content
         tasks={taskState.tasks}
