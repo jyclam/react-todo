@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
@@ -18,16 +18,13 @@ const initialState = {
 };
 
 const Form = ({ listDispatch }) => {
-  const [formState, setFormState] = useState(initialState);
-
-  const clearForm = () => {
-    setFormState(initialState);
-  };
+  const [form] = StyledForm.useForm();
 
   const handleSubmit = (values) => {
     axios
       .post("/api/list", values)
       .then(({ data }) => {
+        form.resetFields();
         listDispatch({
           type: LIST_ACTIONS.ADD_LIST,
           payload: { list: data.data },
@@ -40,13 +37,14 @@ const Form = ({ listDispatch }) => {
 
   return (
     <StyledForm
+      form={form}
+      initialValues={initialState}
       onFinish={(values) => {
         handleSubmit(values);
-        clearForm();
       }}
     >
       <Item name="name">
-        <Input placeholder="Create a new task list" value={formState.title} />
+        <Input placeholder="Create a new task list" />
       </Item>
       <Item>
         <Button htmlType="submit">Submit</Button>

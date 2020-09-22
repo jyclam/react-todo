@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Form as AntdForm, Input, Button } from "antd";
 import styled from "styled-components";
 
@@ -24,38 +24,39 @@ const initialState = {
 };
 
 const Form = ({ selectedListId, taskDispatch }) => {
-  const [formState, setFormState] = useState(initialState);
+  const [form] = StyledForm.useForm();
 
-  const clearForm = () => {
-    setFormState(initialState);
+  const handleSubmit = (values) => {
+    axios
+      .post("/api/task", { ...values, listId: selectedListId })
+      .then(({ data }) => {
+        form.resetFields();
+
+        taskDispatch({
+          type: TASK_ACTIONS.ADD_TASK,
+          payload: { task: data.data },
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+        taskDispatch({
+          type: TASK_ACTIONS.ERROR,
+          payload: { error },
+        });
+      });
   };
 
   return (
     <StyledForm
-      onFinish={(values) => {
-        axios
-          .post("/api/task", { ...values, listId: selectedListId })
-          .then(({ data }) => {
-            taskDispatch({
-              type: TASK_ACTIONS.ADD_TASK,
-              payload: { task: data.data },
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-            taskDispatch({
-              type: TASK_ACTIONS.ERROR,
-              payload: { error },
-            });
-          });
-        clearForm();
-      }}
+      form={form}
+      initialValues={initialState}
+      onFinish={handleSubmit}
     >
       <Item name="title">
-        <Input placeholder="Task title" value={formState.title} />
+        <Input placeholder="Task title" />
       </Item>
       <Item name="details">
-        <Input placeholder="Task details" value={formState.details} />
+        <Input placeholder="Task details" />
       </Item>
       <Item>
         <Button htmlType="submit">Submit</Button>
