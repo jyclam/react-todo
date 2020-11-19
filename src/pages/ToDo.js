@@ -63,8 +63,14 @@ function ToDo() {
   };
 
   const listDeleteHandler = (id) => {
-    axios.delete(`/api/list/${id}`);
-    listDispatch({ type: "DELETE_LIST", payload: { id } });
+    axios
+      .delete(`/api/list/${id}`)
+      .then(() => {
+        listDispatch({ type: LIST_ACTIONS.DELETE_LIST, payload: { id } });
+      })
+      .catch((error) =>
+        listDispatch({ type: LIST_ACTIONS.ERROR, payload: { error } }),
+      );
   };
 
   const togglePinHandler = (id, pinned) => {
